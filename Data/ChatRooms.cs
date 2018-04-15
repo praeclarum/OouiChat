@@ -13,7 +13,7 @@ namespace OouiChat.Data
 
         public List<ChatRoom> Rooms => rooms.Values.ToList ();
 
-        public event EventHandler RoomsChanged;
+        public event EventHandler<RoomEventArgs> RoomAdded;
 
         public ChatRoom FindChatRoom (string name)
         {
@@ -30,9 +30,19 @@ namespace OouiChat.Data
                 Name = name,
             };
             if (rooms.TryAdd (name, room)) {
-                RoomsChanged?.Invoke (this, EventArgs.Empty);
+                RoomAdded?.Invoke (this, new RoomEventArgs (room));
             }
             return room;
+        }
+    }
+
+    public class RoomEventArgs : EventArgs
+    {
+        public ChatRoom Room { get; }
+
+        public RoomEventArgs (ChatRoom room)
+        {
+            this.Room = room;
         }
     }
 }
