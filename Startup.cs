@@ -32,7 +32,7 @@ namespace OouiChat
             }
             else
             {
-                app.UseExceptionHandler("/error");
+                app.UseExceptionHandler("/Home/Error");
             }
 
             app.UseStaticFiles();
@@ -42,6 +42,8 @@ namespace OouiChat
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseOoui ();
         }
     }
 }

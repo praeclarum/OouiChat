@@ -1,5 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
+using Ooui;
+using Ooui.AspNetCore;
 
 namespace FuGetGallery.Controllers
 {
@@ -7,7 +9,16 @@ namespace FuGetGallery.Controllers
     {
         public ActionResult Index ()
         {
-            return Json(5646544654);
+            var inputBox = new Input {
+                Placeholder = "Enter text to transmit"
+            };
+            var ui = inputBox;
+            return new ElementResult (ui, title: "Ooui Chat");
+        }
+
+        public ActionResult Error ()
+        {
+            return this.Content("Beep boop something broke");
         }
     }
 }
