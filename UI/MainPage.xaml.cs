@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Xamarin.Forms;
+using OouiChat.ViewModels;
 
 namespace OouiChat.UI
 {
@@ -10,6 +11,8 @@ namespace OouiChat.UI
         public MainPage ()
         {
             InitializeComponent ();
+
+            BindingContext = new MainPageViewModel ();
         }
     }
 }
