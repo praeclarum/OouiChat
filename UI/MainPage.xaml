@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="OouiChat.UI.MainPage">
+    <Grid BackgroundColor="#23262A" RowSpacing="0" ColumnSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32" />
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="128" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="256" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="256" />
+        </Grid.ColumnDefinitions>
+
+        <!-- TITLE -->
+        <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Orientation="Horizontal" BackgroundColor="#222222" Padding="12,0,0,0">
+            <Label Text="Ooui Chat" FontAttributes="Bold" TextColor="#EEEEEE" VerticalOptions="Center" HorizontalOptions="Start" />
+        </StackLayout>
+        
+        <!-- USERNAME -->
+        <StackLayout Grid.Row="3" Grid.Column="0" Orientation="Horizontal" BackgroundColor="#36383E" Padding="10">
+            <Entry x:Name="userName" Placeholder="Username" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
+                   BackgroundColor="#52555C" TextColor="#FFFFFF" />
+        </StackLayout>
+        
+        <!-- NEW MESSAGE -->
+        <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" BackgroundColor="#3E4148" Padding="10">
+            <Entry x:Name="newMessage" Placeholder="Message" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
+                   BackgroundColor="#52555C" TextColor="#FFFFFF" />
+            <Button Text="Send" VerticalOptions="Center" HorizontalOptions="End" />
+        </StackLayout>
+        
+        <!-- TOOLBAR -->
+        <StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" BackgroundColor="#52555C" Padding="10">
+        </StackLayout>
+
+        <!-- NEW ROOM -->
+        <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" BackgroundColor="#36383E" Padding="10">
+            <Entry x:Name="newRoomName" Placeholder="New Room" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
+                   BackgroundColor="#52555C" TextColor="#FFFFFF" />
+            <Button Text="Create" VerticalOptions="Center" HorizontalOptions="End" />
+        </StackLayout>
+
+        <!-- ROOM LIST -->
+        <ListView x:Name="roomList" Grid.Row="2" Grid.Column="0" BackgroundColor="#2D3137">
+        </ListView>
+
+        <!-- MESSAGE LIST -->
+        <ListView x:Name="messageList" Grid.Row="2" Grid.Column="1" BackgroundColor="#3E4147">
+        </ListView>
+
+        <!-- USER LIST -->
+        <ListView x:Name="userList" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" BackgroundColor="#36383E">
+        </ListView>
+    </Grid>
+</ContentPage>

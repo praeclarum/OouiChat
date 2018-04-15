@@ -1,21 +1,18 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
-using Ooui;
 using Ooui.AspNetCore;
-using OouiChat.Data;
+using Xamarin.Forms;
 
-namespace FuGetGallery.Controllers
+using OouiChat.UI;
+
+namespace OouiChat.Controllers
 {
     public class HomeController : Controller
     {
         public ActionResult Index ()
         {
-            var chatList = new Paragraph ($"{ChatRooms.Shared.Rooms.Count} rooms");
-            var inputBox = new Input {
-                Placeholder = "Enter text to transmit"
-            };
-            var ui = new Div (chatList, inputBox);
-            return new ElementResult (ui, title: "Ooui Chat");
+            var page = new MainPage ();
+            return new ElementResult (page.GetOouiElement (), title: "Ooui Chat");
         }
 
         public ActionResult Error ()

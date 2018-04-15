@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
+using Xamarin.Forms;
 
 namespace OouiChat
 {
@@ -44,6 +45,8 @@ namespace OouiChat
             });
 
             app.UseOoui ();
+
+            Forms.Init ();
         }
     }
 }
