@@ -11,9 +11,16 @@ namespace OouiChat.Data
 
         readonly ConcurrentDictionary<string, ChatRoom> rooms = new ConcurrentDictionary<string, ChatRoom> ();
 
+        public ChatRoom GeneralRoom { get; } = new ChatRoom { Name = "General" };
+
         public List<ChatRoom> Rooms => rooms.Values.ToList ();
 
         public event EventHandler<RoomEventArgs> RoomAdded;
+
+        public ChatRooms ()
+        {
+            rooms.TryAdd (GeneralRoom.Name, GeneralRoom);
+        }
 
         public ChatRoom FindChatRoom (string name)
         {

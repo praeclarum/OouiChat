@@ -12,6 +12,7 @@ namespace OouiChat.Data
 
         public string Name { get; set; } = "";
         public List<ChatMessage> Messages => messages.ToList ();
+        public List<string> Users => users.Keys.ToList ();
 
         public event EventHandler<MessageEventArgs> MessageAdded;
         public event EventHandler<UserEventArgs> UserAdded;
@@ -45,11 +46,11 @@ namespace OouiChat.Data
 
     public class UserEventArgs : EventArgs
     {
-        public string UserName { get; }
+        public string User { get; }
 
-        public UserEventArgs (string userName)
+        public UserEventArgs (string user)
         {
-            this.UserName = userName;
+            this.User = user;
         }
     }
 
