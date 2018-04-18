@@ -30,12 +30,13 @@
         <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" BackgroundColor="#3E4148" Padding="10">
             <Entry Text="{Binding NewMessage}"  Placeholder="Message" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
                    BackgroundColor="#52555C" TextColor="#FFFFFF" />
-            <Button Text="Send" VerticalOptions="Center" HorizontalOptions="End" Command="{Binding SendMessage}" />
+            <Button Text="Send" VerticalOptions="Center" HorizontalOptions="End" Clicked="Handle_SendMessage" />
         </StackLayout>
         
         <!-- TOOLBAR -->
         <StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" BackgroundColor="#52555C" Padding="16,0,0,0">
             <Label Text="{Binding RoomName}" FontAttributes="Bold" TextColor="#EEEEEE" VerticalOptions="Center" HorizontalOptions="Start" />
+            <Label Text="{Binding Error.Message}" FontAttributes="Bold" TextColor="#EE6633" VerticalOptions="Center" HorizontalOptions="Start" />
         </StackLayout>
 
         <!-- NEW ROOM -->
@@ -50,7 +51,14 @@
         </ListView>
 
         <!-- MESSAGE LIST -->
-        <ListView ItemsSource="{Binding Messages}" Grid.Row="2" Grid.Column="1" BackgroundColor="#3E4147">
+        <ListView x:Name="messageList" ItemsSource="{Binding Messages}" Grid.Row="2" Grid.Column="1" BackgroundColor="#3E4147">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding Message}" TextColor="#FFFFFF" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
 
         <!-- USER LIST -->

@@ -3,16 +3,117 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using OouiChat.ViewModels;
+using OouiChat.Data;
+using System.Linq;
 
 namespace OouiChat.UI
 {
     public partial class MainPage : ContentPage
     {
+        MainPageViewModel ViewModel => BindingContext as MainPageViewModel;
+
+        ChatRoom currentRoom = null;
+
         public MainPage ()
         {
             InitializeComponent ();
 
-            BindingContext = new MainPageViewModel ();
+            var vm = new MainPageViewModel ();
+            BindingContext = vm;
+
+            var rooms = ChatRooms.Shared;
+            vm.Rooms.AddRange (rooms.Rooms);
+
+            rooms.RoomAdded += Rooms_RoomAdded;
+
+            if (vm.Rooms.Count == 0) {
+                rooms.AddChatRoom ("General");
+            }
+
+            EnterRoom ("General");
+        }
+
+        protected override void OnAppearing ()
+        {
+            base.OnAppearing ();
+
+            messageList.ScrollTo (null, ScrollToPosition.End, false);
+        }
+
+        void Rooms_RoomAdded (object sender, RoomEventArgs e)
+        {
+            ViewModel?.Rooms.Add (e.Room);
+        }
+
+        void CurrentRoom_MessageAdded (object sender, MessageEventArgs e)
+        {
+            ViewModel?.Messages.Add (e.Message);
+            messageList.ScrollTo (null, ScrollToPosition.End, false);
+        }
+
+        void CurrentRoom_UserAdded (object sender, UserEventArgs e)
+        {
+            ViewModel?.Users.Add (e.User);
+        }
+
+        void EnterRoom (string nextRoomName)
+        {
+            var vm = ViewModel;
+            if (vm == null)
+                return;
+
+            //
+            // Find the requested room
+            //
+            if (vm.RoomName == nextRoomName)
+                return;
+
+            var room = vm.Rooms.FirstOrDefault (x => x.Name == nextRoomName);
+            if (room == null) {
+                room = ChatRooms.Shared.GeneralRoom;
+            }
+
+            //
+            // Set the new current room
+            //
+            if (room == currentRoom)
+                return;
+
+            if (currentRoom != null) {
+                currentRoom.MessageAdded -= CurrentRoom_MessageAdded;
+                currentRoom.UserAdded -= CurrentRoom_UserAdded;
+            }
+            currentRoom = room;
+            currentRoom.MessageAdded += CurrentRoom_MessageAdded;
+            currentRoom.UserAdded += CurrentRoom_UserAdded;
+
+            //
+            // Update the display data
+            //
+            vm.RoomName = room.Name;
+            vm.Users.Clear ();
+            vm.Messages.Clear ();
+            vm.Users.AddRange (currentRoom.Users);
+            vm.Messages.AddRange (currentRoom.Messages);
+            for (var i = 0; i < 100; i++) {
+                vm.Users.Add ("User " + i);
+                vm.Messages.Add (new ChatMessage { Message = "Words words words " + i, UserName = "User " + i, UtcTime = DateTime.UtcNow });
+            }
+        }
+
+        void Handle_SendMessage (object sender, System.EventArgs e)
+        {
+            if (!(BindingContext is MainPageViewModel vm))
+                return;
+
+            try {
+                var m = currentRoom?.AddMessage (vm.Username, vm.NewMessage);
+                vm.NewMessage = "";
+                vm.Error = null;
+            }
+            catch (Exception ex) {
+                vm.Error = ex;
+            }
         }
     }
 }

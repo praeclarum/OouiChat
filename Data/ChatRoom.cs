@@ -17,17 +17,17 @@ namespace OouiChat.Data
         public event EventHandler<MessageEventArgs> MessageAdded;
         public event EventHandler<UserEventArgs> UserAdded;
 
-        public void AddMessage (string userName, string message)
+        public ChatMessage AddMessage (string username, string message)
         {
-            if (string.IsNullOrWhiteSpace (userName) || string.IsNullOrWhiteSpace (message))
+            if (string.IsNullOrWhiteSpace (username) || string.IsNullOrWhiteSpace (message))
                 throw new ArgumentException ();
 
-            userName = userName.Trim ();
+            username = username.Trim ();
 
             var now = DateTime.UtcNow;
 
             var m = new ChatMessage {
-                UserName = userName,
+                UserName = username,
                 Message = message.Trim (),
                 UtcTime = now,
             };
@@ -35,12 +35,14 @@ namespace OouiChat.Data
             messages.Enqueue (m);
             MessageAdded?.Invoke (this, new MessageEventArgs (m));
 
-            if (!users.ContainsKey (userName)) {
-                if (users.TryAdd (userName, now)) {
-                    UserAdded?.Invoke (this, new UserEventArgs (userName));
+            if (!users.ContainsKey (username)) {
+                if (users.TryAdd (username, now)) {
+                    UserAdded?.Invoke (this, new UserEventArgs (username));
                 }
             }
-            users[userName] = now;
+            users[username] = now;
+
+            return m;
         }
     }
 
