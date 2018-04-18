@@ -33,11 +33,49 @@ namespace OouiChat.UI
             EnterRoom ("General");
         }
 
-        protected override void OnAppearing ()
+        protected override void OnDisappearing ()
         {
-            base.OnAppearing ();
+            base.OnDisappearing ();
+            ChatRooms.Shared.RoomAdded -= Rooms_RoomAdded;
+            if (currentRoom != null) {
+                currentRoom.MessageAdded -= CurrentRoom_MessageAdded;
+                currentRoom.UserAdded -= CurrentRoom_UserAdded;
+                currentRoom = null;
+            }
+            BindingContext = null;
+        }
 
-            messageList.ScrollTo (null, ScrollToPosition.End, false);
+        void Handle_SendMessage (object sender, System.EventArgs e)
+        {
+            if (!(BindingContext is MainPageViewModel vm))
+                return;
+
+            try {
+                var m = currentRoom?.AddMessage (vm.Username, vm.NewMessage);
+                vm.NewMessage = "";
+                vm.Error = null;
+            }
+            catch (Exception ex) {
+                vm.Error = ex;
+            }
+        }
+
+        void Handle_CreateNewRoom (object sender, System.EventArgs e)
+        {
+            if (!(BindingContext is MainPageViewModel vm))
+                return;
+
+            try {
+                if (string.IsNullOrWhiteSpace (vm.NewRoomName))
+                    throw new Exception ("No room name specified");
+
+                ChatRooms.Shared.AddChatRoom (vm.NewRoomName);
+                EnterRoom (vm.NewRoomName);
+                vm.Error = null;
+            }
+            catch (Exception ex) {
+                vm.Error = ex;
+            }
         }
 
         void Rooms_RoomAdded (object sender, RoomEventArgs e)
@@ -95,25 +133,6 @@ namespace OouiChat.UI
             vm.Messages.Clear ();
             vm.Users.AddRange (currentRoom.Users);
             vm.Messages.AddRange (currentRoom.Messages);
-            for (var i = 0; i < 100; i++) {
-                vm.Users.Add ("User " + i);
-                vm.Messages.Add (new ChatMessage { Message = "Words words words " + i, UserName = "User " + i, UtcTime = DateTime.UtcNow });
-            }
-        }
-
-        void Handle_SendMessage (object sender, System.EventArgs e)
-        {
-            if (!(BindingContext is MainPageViewModel vm))
-                return;
-
-            try {
-                var m = currentRoom?.AddMessage (vm.Username, vm.NewMessage);
-                vm.NewMessage = "";
-                vm.Error = null;
-            }
-            catch (Exception ex) {
-                vm.Error = ex;
-            }
         }
     }
 }

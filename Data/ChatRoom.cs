@@ -27,7 +27,7 @@ namespace OouiChat.Data
             var now = DateTime.UtcNow;
 
             var m = new ChatMessage {
-                UserName = username,
+                Username = username,
                 Message = message.Trim (),
                 UtcTime = now,
             };

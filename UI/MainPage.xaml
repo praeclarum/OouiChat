@@ -43,11 +43,18 @@
         <StackLayout Grid.Row="1" Grid.Column="0" Orientation="Horizontal" BackgroundColor="#36383E" Padding="10">
             <Entry Text="{Binding NewRoomName}"  Placeholder="New Room" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
                    BackgroundColor="#52555C" TextColor="#FFFFFF" />
-            <Button Text="Create" VerticalOptions="Center" HorizontalOptions="End" Command="{Binding CreateNewRoom}" />
+            <Button Text="Create" VerticalOptions="Center" HorizontalOptions="End" Clicked="Handle_CreateNewRoom" />
         </StackLayout>
 
         <!-- ROOM LIST -->
         <ListView ItemsSource="{Binding Rooms}" Grid.Row="2" Grid.Column="0" BackgroundColor="#2D3137">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding Name}" TextColor="#CCCCCC" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
 
         <!-- MESSAGE LIST -->
@@ -55,7 +62,10 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label Text="{Binding Message}" TextColor="#FFFFFF" />
+                        <StackLayout Orientation="Vertical">
+                            <Label Text="{Binding Metadata}" TextColor="#CCCCCC" FontSize="12" />
+                            <Label Text="{Binding Message}" TextColor="#FFFFFF" />
+                        </StackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -63,6 +73,13 @@
 
         <!-- USER LIST -->
         <ListView ItemsSource="{Binding Users}" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" BackgroundColor="#36383E">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding .}" TextColor="#CCCCCC" />
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
     </Grid>
 </ContentPage>

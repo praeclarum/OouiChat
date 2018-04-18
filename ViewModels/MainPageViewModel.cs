@@ -8,7 +8,7 @@ namespace OouiChat.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
-        string username = "Anonymous";
+        string username;
         public string Username {
             get => username;
             set => SetProperty (ref username, value);
@@ -38,5 +38,10 @@ namespace OouiChat.ViewModels
         public ObservableRangeCollection<ChatRoom> Rooms { get; } = new ObservableRangeCollection<ChatRoom> ();
         public ObservableRangeCollection<string> Users { get; } = new ObservableRangeCollection<string> ();
         public ObservableRangeCollection<ChatMessage> Messages { get; } = new ObservableRangeCollection<ChatMessage> ();
+
+        public MainPageViewModel ()
+        {
+            username = "Anonymous" + new Random ().Next (1, 1000);
+        }
     }
 }
