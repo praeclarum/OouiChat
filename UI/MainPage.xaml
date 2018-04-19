@@ -28,7 +28,7 @@
         
         <!-- NEW MESSAGE -->
         <StackLayout Grid.Row="3" Grid.Column="1" Orientation="Horizontal" BackgroundColor="#3E4148" Padding="10">
-            <Entry Text="{Binding NewMessage}"  Placeholder="Message" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
+            <Entry x:Name="newMessage" Text="{Binding NewMessage}"  Placeholder="Message" VerticalOptions="Center" HorizontalOptions="FillAndExpand"
                    BackgroundColor="#52555C" TextColor="#FFFFFF" />
             <Button Text="Send" VerticalOptions="Center" HorizontalOptions="End" Clicked="Handle_SendMessage" />
         </StackLayout>
@@ -36,7 +36,7 @@
         <!-- TOOLBAR -->
         <StackLayout Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" BackgroundColor="#52555C" Padding="16,0,0,0">
             <Label Text="{Binding RoomName}" FontAttributes="Bold" TextColor="#EEEEEE" VerticalOptions="Center" HorizontalOptions="Start" />
-            <Label Text="{Binding Error.Message}" FontAttributes="Bold" TextColor="#EE6633" VerticalOptions="Center" HorizontalOptions="Start" />
+            <Label Text="{Binding Error.Message}" FontAttributes="Bold" TextColor="#EE6633" VerticalOptions="Center" HorizontalOptions="FillAndExpand" />
         </StackLayout>
 
         <!-- NEW ROOM -->
@@ -47,7 +47,8 @@
         </StackLayout>
 
         <!-- ROOM LIST -->
-        <ListView ItemsSource="{Binding Rooms}" Grid.Row="2" Grid.Column="0" BackgroundColor="#2D3137">
+        <ListView ItemsSource="{Binding Rooms}" Grid.Row="2" Grid.Column="0" BackgroundColor="#2D3137"
+                  ItemSelected="Handle_RoomSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -63,8 +64,8 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{Binding Metadata}" TextColor="#CCCCCC" FontSize="12" />
-                            <Label Text="{Binding Message}" TextColor="#FFFFFF" />
+                            <Label Text="{Binding Metadata}" TextColor="#CCCCCC" FontSize="16" />
+                            <Label Text="{Binding Message}" TextColor="#FFFFFF" FontSize="24" />
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>
@@ -72,7 +73,8 @@
         </ListView>
 
         <!-- USER LIST -->
-        <ListView ItemsSource="{Binding Users}" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" BackgroundColor="#36383E">
+        <ListView ItemsSource="{Binding Users}" Grid.Row="2" Grid.Column="2" Grid.RowSpan="2" BackgroundColor="#36383E"
+                  ItemSelected="Handle_UserSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

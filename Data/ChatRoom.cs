@@ -19,8 +19,11 @@ namespace OouiChat.Data
 
         public ChatMessage AddMessage (string username, string message)
         {
-            if (string.IsNullOrWhiteSpace (username) || string.IsNullOrWhiteSpace (message))
-                throw new ArgumentException ();
+            if (string.IsNullOrWhiteSpace (username))
+                throw new ArgumentException ("No username specified");
+            
+            if (string.IsNullOrWhiteSpace (message))
+                throw new ArgumentException ("No message specified");
 
             username = username.Trim ();
 

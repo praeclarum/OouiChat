@@ -54,10 +54,25 @@ namespace OouiChat.UI
                 var m = currentRoom?.AddMessage (vm.Username, vm.NewMessage);
                 vm.NewMessage = "";
                 vm.Error = null;
+                newMessage.Focus ();
             }
             catch (Exception ex) {
                 vm.Error = ex;
             }
+        }
+
+        void Handle_RoomSelected (object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            EnterRoom (((ChatRoom)e.SelectedItem).Name);
+        }
+
+        void Handle_UserSelected (object sender, Xamarin.Forms.SelectedItemChangedEventArgs e)
+        {
+            if (!(BindingContext is MainPageViewModel vm))
+                return;
+
+            vm.NewMessage = $"@{e.SelectedItem} {vm.NewMessage}";
+            newMessage.Focus ();
         }
 
         void Handle_CreateNewRoom (object sender, System.EventArgs e)
@@ -71,6 +86,7 @@ namespace OouiChat.UI
 
                 ChatRooms.Shared.AddChatRoom (vm.NewRoomName);
                 EnterRoom (vm.NewRoomName);
+                vm.NewRoomName = "";
                 vm.Error = null;
             }
             catch (Exception ex) {
@@ -133,6 +149,8 @@ namespace OouiChat.UI
             vm.Messages.Clear ();
             vm.Users.AddRange (currentRoom.Users);
             vm.Messages.AddRange (currentRoom.Messages);
+
+            messageList.ScrollTo (null, ScrollToPosition.End, false);
         }
     }
 }
