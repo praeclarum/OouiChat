@@ -38,7 +38,7 @@ namespace OouiChat.Data
             };
 
             messages.Enqueue (m);
-            while (messages.Count > 128) {
+            while (messages.Count > 32) {
                 messages.TryDequeue (out var _);
             }
 

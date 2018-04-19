@@ -101,7 +101,13 @@ namespace OouiChat.UI
 
         void CurrentRoom_MessageAdded (object sender, MessageEventArgs e)
         {
-            ViewModel?.Messages.Add (e.Message);
+            if (!(BindingContext is MainPageViewModel vm))
+                return;
+
+            vm.Messages.Add (e.Message);
+            if (vm.Messages.Count > 64) {
+                vm.Messages.RemoveRange (vm.Messages.Take (32));
+            }
             messageList.ScrollTo (null, ScrollToPosition.End, false);
         }
 
