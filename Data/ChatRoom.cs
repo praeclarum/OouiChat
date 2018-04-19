@@ -38,6 +38,10 @@ namespace OouiChat.Data
             };
 
             messages.Enqueue (m);
+            while (messages.Count > 128) {
+                messages.TryDequeue (out var _);
+            }
+
             MessageAdded?.Invoke (this, new MessageEventArgs (m));
 
             if (!users.ContainsKey (username)) {
