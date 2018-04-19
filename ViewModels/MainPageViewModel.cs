@@ -36,7 +36,7 @@ namespace OouiChat.ViewModels
         public bool ErrorIsVisible => Error != null;
 
         public ObservableRangeCollection<ChatRoom> Rooms { get; } = new ObservableRangeCollection<ChatRoom> ();
-        public ObservableRangeCollection<string> Users { get; } = new ObservableRangeCollection<string> ();
+        public ObservableRangeCollection<ChatUser> Users { get; } = new ObservableRangeCollection<ChatUser> ();
         public ObservableRangeCollection<ChatMessage> Messages { get; } = new ObservableRangeCollection<ChatMessage> ();
     }
 }

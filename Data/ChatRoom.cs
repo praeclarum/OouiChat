@@ -2,17 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
+using Xamarin.Forms;
 
 namespace OouiChat.Data
 {
     public class ChatRoom
     {
         readonly ConcurrentQueue<ChatMessage> messages = new ConcurrentQueue<ChatMessage> ();
-        readonly ConcurrentDictionary<string, DateTime> users = new ConcurrentDictionary<string, DateTime> ();
+        readonly ConcurrentDictionary<string, ChatUser> users = new ConcurrentDictionary<string, ChatUser> ();
 
         public string Name { get; set; } = "";
         public List<ChatMessage> Messages => messages.ToList ();
-        public List<string> Users => users.Keys.ToList ();
+        public List<ChatUser> Users => users.Values.ToList ();
+        public string Title => $"#{Name}";
 
         public event EventHandler<MessageEventArgs> MessageAdded;
         public event EventHandler<UserEventArgs> UserAdded;
@@ -39,11 +41,13 @@ namespace OouiChat.Data
             MessageAdded?.Invoke (this, new MessageEventArgs (m));
 
             if (!users.ContainsKey (username)) {
-                if (users.TryAdd (username, now)) {
-                    UserAdded?.Invoke (this, new UserEventArgs (username));
+                var u = new ChatUser {
+                    Username = username,
+                };
+                if (users.TryAdd (username, u)) {
+                    UserAdded?.Invoke (this, new UserEventArgs (u));
                 }
             }
-            users[username] = now;
 
             return m;
         }
@@ -51,9 +55,9 @@ namespace OouiChat.Data
 
     public class UserEventArgs : EventArgs
     {
-        public string User { get; }
+        public ChatUser User { get; }
 
-        public UserEventArgs (string user)
+        public UserEventArgs (ChatUser user)
         {
             this.User = user;
         }

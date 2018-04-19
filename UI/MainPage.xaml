@@ -52,7 +52,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label Text="{Binding Name}" TextColor="#CCCCCC" />
+                        <Label Text="{Binding Title}" TextColor="#CCCCCC" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -78,7 +78,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label Text="{Binding .}" TextColor="#CCCCCC" />
+                        <Label Text="{Binding Title}" TextColor="#CCCCCC" />
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

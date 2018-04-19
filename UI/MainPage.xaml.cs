@@ -71,7 +71,7 @@ namespace OouiChat.UI
             if (!(BindingContext is MainPageViewModel vm))
                 return;
 
-            vm.NewMessage = $"@{e.SelectedItem} {vm.NewMessage}";
+            vm.NewMessage = $"@{((ChatUser)e.SelectedItem).Username} {vm.NewMessage}";
             newMessage.Focus ();
         }
 
