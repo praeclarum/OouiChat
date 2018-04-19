@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xamarin.Forms;
 
@@ -13,32 +14,37 @@ namespace OouiChat
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public void ConfigureServices(IServiceCollection services)
+        public Startup (IConfiguration configuration)
         {
-            services.AddMvc();
-            services.Configure<GzipCompressionProviderOptions>(options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
-            services.AddResponseCompression();
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices (IServiceCollection services)
+        {
+            services.Configure<GzipCompressionProviderOptions> (options => options.Level = System.IO.Compression.CompressionLevel.Optimal);
+            services.AddResponseCompression ();
+            services.AddMvc ();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseResponseCompression();
+            app.UseResponseCompression ();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
+            else {
+                app.UseExceptionHandler ("/Home/Error");
             }
 
-            app.UseStaticFiles();
+            app.UseHttpsRedirection ();
+            app.UseStaticFiles ();
 
-            app.UseMvc(routes => {
+            app.UseMvc (routes => {
                 routes.MapRoute (
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
