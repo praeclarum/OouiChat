@@ -41,7 +41,6 @@ namespace OouiChat
                 app.UseExceptionHandler ("/Home/Error");
             }
 
-            app.UseHttpsRedirection ();
             app.UseStaticFiles ();
 
             app.UseMvc (routes => {
